@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CouponDto>
+@{
+    ViewData["Title"] = "CouponIndex";
+    int count = 0;
+}
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cars</h4>
+                        <p class="card-subtitle mb-4">
+                            Coupon List
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Code</th>
+                                        <th>Min Amount</th>
+                                        <th>Discount</th>
+                                        <th>Delete</th>
+                                        <th>Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <th scope="row">@count</th>
+                                            <td>@item.CouponCode</td>
+                                            <td>@((item.minAmount).ToString("c"))</td>
+                                            <td>@((item.DiscountAmount).ToString("c"))</td>
+                                            <td><a href="/Delete/@item.CouponId" class="btn btn-outline-danger">Delete</a></td>
+                                            <td><a href="/Update/@item.CouponId" class="btn btn-outline-success">Update</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <a href="/Create/Index" class="btn btn-outline-primary">New Coupon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
