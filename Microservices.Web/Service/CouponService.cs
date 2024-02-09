@@ -1,6 +1,5 @@
 ﻿using Microservices.Web.Models;
 using Microservices.Web.Service.IService;
-using Microservices.Web.Utility;
 using static Microservices.Web.Utility.SD;
 
 namespace Microservices.Web.Service

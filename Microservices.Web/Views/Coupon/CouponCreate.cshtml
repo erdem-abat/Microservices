@@ -1,0 +1,45 @@
+﻿@model CouponDto
+@{
+    ViewData["Title"] = "CouponCreate";
+}
+
+<h1>Coupon Create</h1>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cars</h4>
+                        <form method="post" action="CouponCreate">
+                            <div class="form-group">
+                                <label asp-for="CouponCode"></label>
+                                <input asp-for="CouponCode" class="form-control" />
+                                <span asp-validation-for="CouponCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="DiscountAmount"></label>
+                                <input asp-for="DiscountAmount" class="form-control" />
+                                <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="minAmount"></label>
+                                <input asp-for="minAmount" class="form-control" />
+                                <span asp-validation-for="minAmount" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

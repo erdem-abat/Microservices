@@ -2,6 +2,7 @@
 using Microservices.Web.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Microservices.Web.Controllers
@@ -26,7 +27,44 @@ namespace Microservices.Web.Controllers
                 list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
 
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
             return View(list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CouponCreate()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CouponCreate(CouponDto couponDto)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDto? response = await _couponService.CreateCouponsAsync(couponDto);
+
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Coupon created successfully";
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+            }
+            return View(couponDto);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CouponDelete(int id)
+        {
+            TempData["success"] = "Coupon deleted successfully";
+            await _couponService.DeleteCouponsAsync(id);
+            return RedirectToAction(nameof(CouponIndex));
         }
     }
 }

@@ -106,6 +106,7 @@ namespace Microservices.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpDelete]
+        [Route("{id:int}")]
         public ResponseDto Delete(int id)
         {
             try

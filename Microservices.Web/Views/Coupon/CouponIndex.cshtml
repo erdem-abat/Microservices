@@ -34,13 +34,13 @@
                                             <td>@item.CouponCode</td>
                                             <td>@((item.minAmount).ToString("c"))</td>
                                             <td>@((item.DiscountAmount).ToString("c"))</td>
-                                            <td><a href="/Delete/@item.CouponId" class="btn btn-outline-danger">Delete</a></td>
-                                            <td><a href="/Update/@item.CouponId" class="btn btn-outline-success">Update</a></td>
+                                            <td><a href="/Coupon/CouponDelete/@item.CouponId" class="btn btn-outline-danger">Delete</a></td>
+                                            <td><a href="/Coupon/Update/@item.CouponId" class="btn btn-outline-success">Update</a></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
-                            <a href="/Create/Index" class="btn btn-outline-primary">New Coupon</a>
+                            <a href="/Coupon/CouponCreate/" class="btn btn-outline-primary">New Coupon</a>
                         </div>
                     </div>
                 </div>
