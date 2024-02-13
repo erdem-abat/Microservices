@@ -33,9 +33,30 @@ namespace Microservices.Services.AuthAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
-            return Ok();
+            var login = await _authService.Login(loginRequestDto);
+            if(login.User == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Username or password incorrect";
+                return BadRequest(_response);
+            }
+            _response.Result = login;
+            return Ok(_response);
+        }
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] RegisterationRequestDto registerationRequestDto)
+        {
+            var assignRoleStatu = await _authService.AssignRole(registerationRequestDto.Email, registerationRequestDto.Role.ToUpper());
+            if (!assignRoleStatu)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error encountered";
+                return BadRequest(_response);
+            }
+            return Ok(_response);
         }
     }
 }

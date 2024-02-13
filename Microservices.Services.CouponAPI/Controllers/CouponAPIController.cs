@@ -2,6 +2,7 @@
 using Microservices.Services.CouponAPI.Data;
 using Microservices.Services.CouponAPI.Models;
 using Microservices.Services.CouponAPI.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace Microservices.Services.CouponAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -70,6 +72,7 @@ namespace Microservices.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Create([FromBody] CouponDto couponDto)
         {
             try
@@ -88,6 +91,7 @@ namespace Microservices.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Update([FromBody] CouponDto couponDto)
         {
             try
