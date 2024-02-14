@@ -1,26 +1,29 @@
-﻿@model IEnumerable<CouponDto>
+﻿@model IEnumerable<ProductDto>
 @{
-    ViewData["Title"] = "CouponIndex";
+    ViewData["Title"] = "ProductIndex";
     int count = 0;
 }
+
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Coupon</h4>
+                        <h4 class="card-title">Product</h4>
                         <p class="card-subtitle mb-4">
-                            Coupon List
+                            Product List
                         </p>
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Min Amount</th>
-                                        <th>Discount</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+                                        <th>Category</th>
                                         <th>Delete</th>
                                         <th>Update</th>
                                     </tr>
@@ -31,16 +34,18 @@
                                         count++;
                                         <tr>
                                             <th scope="row">@count</th>
-                                            <td>@item.CouponCode</td>
-                                            <td>@((item.minAmount).ToString("c"))</td>
-                                            <td>@((item.DiscountAmount).ToString("c"))</td>
-                                            <td><a href="/Coupon/CouponDelete/@item.CouponId" class="btn btn-outline-danger">Delete</a></td>
-                                            <td><a href="/Coupon/Update/@item.CouponId" class="btn btn-outline-success">Update</a></td>
+                                            <td>@item.Name</td>
+                                            <td>@((item.Price).ToString("c"))</td>
+                                            <td>@item.Description</td>
+                                            <td><img src="@item.ImageUrl" width="50" height="50"/> </td>
+                                            <td>@item.CategoryName</td>
+                                            <td><a href="/Product/ProductDelete/@item.ProductId" class="btn btn-outline-danger">Delete</a></td>
+                                            <td><a asp-action="ProductUpdate" asp-route-productId="@item.ProductId" class="btn btn-outline-success">Update</a></td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
-                            <a href="/Coupon/CouponCreate/" class="btn btn-outline-primary">New Coupon</a>
+                            <a href="/Product/ProductCreate/" class="btn btn-outline-primary">New Product</a>
                         </div>
                     </div>
                 </div>
