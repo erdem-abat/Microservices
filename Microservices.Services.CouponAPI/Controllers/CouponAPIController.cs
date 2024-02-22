@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Microservices.Services.CouponAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -81,6 +82,18 @@ namespace Microservices.Services.CouponAPI.Controllers
                 _context.Coupons.Add(obj);
                 _context.SaveChanges();
 
+                var options = new Stripe.CouponCreateOptions
+                {
+                    DurationInMonths = 3,
+                    Duration = "repeating",
+                    AmountOff = (long)(couponDto.DiscountAmount*100),
+                    Name = couponDto.CouponCode,
+                    Currency = "usd",
+                    Id = couponDto.CouponCode
+                };
+                var service = new Stripe.CouponService();
+                service.Create(options);
+
                 _response.Result = _mapper.Map<CouponDto>(obj);
             }
             catch (Exception ex)
@@ -118,6 +131,10 @@ namespace Microservices.Services.CouponAPI.Controllers
                 Coupon obj = _context.Coupons.First(x=>x.CouponId == id);
                 _context.Coupons.Remove(obj);
                 _context.SaveChanges();
+
+                var service = new Stripe.CouponService();
+                service.Delete(obj.CouponCode);
+
             }
             catch (Exception ex)
             {

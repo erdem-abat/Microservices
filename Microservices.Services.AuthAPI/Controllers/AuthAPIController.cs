@@ -1,4 +1,6 @@
-﻿using Microservices.Services.AuthAPI.Models.Dto;
+﻿using Microservices.MessageBus;
+using Microservices.Services.AuthAPI.Models.Dto;
+using Microservices.Services.AuthAPI.RabbitMQSender;
 using Microservices.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +12,15 @@ namespace Microservices.Services.AuthAPI.Controllers
     {
         private readonly IAuthService _authService;
         protected ResponseDto _response;
-
-        public AuthAPIController(IAuthService authService)
+        //private IMessageBus _messageBus;
+        private IRabbitMQAuthMessageSender _messageBus;
+        private readonly IConfiguration _configuration;
+        public AuthAPIController(IAuthService authService, IRabbitMQAuthMessageSender messageBus, IConfiguration configuration)
         {
             _authService = authService;
             _response = new();
+            _messageBus = messageBus;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -28,7 +34,8 @@ namespace Microservices.Services.AuthAPI.Controllers
                 _response.Message = errorMesage;
                 return BadRequest(_response);
             }
-
+            await AssignRole(registerationRequestDto);
+            _messageBus.SendMessage(registerationRequestDto.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
             return Ok(_response);
         }
 

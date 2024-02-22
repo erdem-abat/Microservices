@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Product</h4>
-                        <form method="post" action="ProductCreate">
+                        <form method="post" action="ProductCreate" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label asp-for="Name"></label>
                                 <input asp-for="Name" class="form-control" />
@@ -32,9 +32,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="ImageUrl"></label>
-                                <input asp-for="ImageUrl" class="form-control" />
-                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                <input asp-for="Image" class="form-control" />
+                                <input asp-for="ImageUrl" hidden class="form-control" />
+                                <span asp-validation-for="Image" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">

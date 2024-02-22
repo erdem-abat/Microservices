@@ -1,5 +1,7 @@
+using Microservices.MessageBus;
 using Microservices.Services.AuthAPI.Data;
 using Microservices.Services.AuthAPI.Models;
+using Microservices.Services.AuthAPI.RabbitMQSender;
 using Microservices.Services.AuthAPI.Service;
 using Microservices.Services.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +21,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFramework
 builder.Services.AddControllers();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+//builder.Services.AddScoped<IMessageBus, MessageBus>();
+builder.Services.AddScoped<IRabbitMQAuthMessageSender,RabbitMQAuthMessageSender>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,6 +35,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "AUTH API");
+        c.RoutePrefix = string.Empty;
+    });
+}
+
+
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

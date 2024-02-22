@@ -2,6 +2,7 @@ using AutoMapper;
 using Microservices.Services.ShoppingCartAPI;
 using Microservices.Services.ShoppingCartAPI.Data;
 using Microservices.Services.ShoppingCartAPI.Extensions;
+using Microservices.Services.ShoppingCartAPI.RabbitMQSender;
 using Microservices.Services.ShoppingCartAPI.Service;
 using Microservices.Services.ShoppingCartAPI.Service.IService;
 using Microservices.Services.ShoppingCartAPI.Utility;
@@ -25,6 +26,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+//builder.Services.AddScoped<IMessageBus, MessageBus>();
+builder.Services.AddScoped<IRabbitMQCartMessageSender,RabbitMQCartMessageSender>();
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
@@ -68,6 +71,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShoppingCart API");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Microservices.Web.Controllers
 {
@@ -12,7 +13,6 @@ namespace Microservices.Web.Controllers
     {
         private readonly IProductService _ProductService;
         private readonly ICartService _cartService;
-
         public HomeController(IProductService ProductService, ICartService cartService)
         {
             _ProductService = ProductService;
@@ -80,6 +80,9 @@ namespace Microservices.Web.Controllers
             List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
             cartDto.CartDetails = cartDetailsDtos;
 
+            cartDto.CartHeader.Email = User.Claims.Where(x => x.Type == JwtClaimTypes.Email)?.FirstOrDefault()?.Value;
+            cartDto.CartHeader.Phone = "1111111";
+            cartDto.CartHeader.Name = User.Claims.Where(x => x.Type == ClaimTypes.Name)?.FirstOrDefault()?.Value;
 
             ResponseDto? response = await _cartService.UpsertCartAsync(cartDto);
 
