@@ -5,7 +5,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost" // 191. video web projesindeki prod appset e göre hostlar url ile değişecek
+          "Host": "localhost"
         }
       ],
       "UpstreamPathTemplate": "/api/ProductAPI",
@@ -253,6 +253,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7777" //191. video url değişecek
+    "BaseUrl": "https://localhost:7777" 
   }
 }
